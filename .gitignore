@@ -1,0 +1,22 @@
+# --- Large files hosted externally (see README "Data & model files") ---
+# These exceed GitHub's 100 MB per-file limit and are distributed via
+# Hugging Face Hub instead. Run scripts/download_assets.py to fetch them.
+fine_tuned_BERT/fine-tuned-finbert.pth
+backtesting/data/BTCUSDT-last.csv
+weights_comparison_and_derive/BTCUSDT.csv
+
+# --- Jupyter / Python noise ---
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.python-version
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/

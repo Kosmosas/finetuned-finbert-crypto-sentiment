@@ -1,0 +1,35 @@
+# Python dependencies for the notebooks and helper modules in this repository.
+# Versions are left unpinned; the project was developed on Python 3.10+.
+# Install with:  pip install -r requirements.txt
+
+# --- Data handling ---
+numpy
+pandas
+scipy
+
+# --- Machine learning / deep learning ---
+torch
+transformers
+scikit-learn
+xgboost
+iTransformer
+optuna
+joblib
+
+# --- NLP / text preprocessing ---
+nltk
+emoji
+
+# --- Plotting ---
+matplotlib
+seaborn
+
+# --- Utilities ---
+tqdm
+
+# --- Asset download helper (scripts/download_assets.py) ---
+huggingface_hub
+
+# Note: the sentiment sandbox notebooks were originally run on Google Colab
+# and contain `from google.colab import drive` cells. Those are Colab-only
+# and are not required to run the rest of the project locally.
