@@ -1,0 +1,5 @@
+datetime,trade_index,portfolio_value,trade_type,strategy
+2024-06-08 00:00:00+00:00,0,10000.0,start,Threshold Uptrend — Price + volume + technicals
+2024-08-30 15:00:00+00:00,1997,9997.2775,long,Threshold Uptrend — Price + volume + technicals
+2024-09-01 22:00:00+00:00,2052,9863.42173302391,exit_long,Threshold Uptrend — Price + volume + technicals
+2024-11-30 23:00:00+00:00,4207,9863.42173302391,end,Threshold Uptrend — Price + volume + technicals

@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+\centering
+\caption{iTransformer forecasting performance under the corrected protocol, out-of-fold sentiment. Mean $\pm$ sd over three seeds.}
+\label{tab:itransformer_forecasting_oof}
+\begin{tabular}{llrrrrr}
+\hline
+Regime & Feature set & $n$ & MAE (USD) & RMSE (USD) & Corr. & Dir. acc. (\%) \\
+\hline
+        Uptrend & Price + volume & 5,136 & 257.7 $\pm$ 0.5 & 397.8 $\pm$ 0.4 & 0.0265 $\pm$ 0.0080 & 51.24 \\
+        Sideways & Price + volume & 3,624 & 336.7 $\pm$ 0.8 & 516.2 $\pm$ 0.2 & 0.0060 $\pm$ 0.0146 & 50.44 \\
+        Uptrend & Price + volume + sentiment & 5,136 & 257.3 $\pm$ 0.3 & 397.7 $\pm$ 0.4 & 0.0017 $\pm$ 0.0029 & 50.44 \\
+        Sideways & Price + volume + sentiment & 3,624 & 335.0 $\pm$ 0.7 & 515.0 $\pm$ 1.0 & 0.0025 $\pm$ 0.0170 & 49.94 \\
+        Uptrend & Price + volume + technicals & 5,120 & 257.6 $\pm$ 0.8 & 398.3 $\pm$ 0.8 & 0.0137 $\pm$ 0.0172 & 50.93 \\
+        Sideways & Price + volume + technicals & 3,621 & 335.8 $\pm$ 0.9 & 515.8 $\pm$ 0.3 & -0.0029 $\pm$ 0.0124 & 50.27 \\
+        Uptrend & Full dataset & 5,120 & 262.3 $\pm$ 1.4 & 402.0 $\pm$ 1.6 & 0.0098 $\pm$ 0.0117 & 51.12 \\
+        Sideways & Full dataset & 3,621 & 341.3 $\pm$ 2.6 & 520.5 $\pm$ 3.3 & 0.0091 $\pm$ 0.0214 & 50.97 \\
+\hline
+\end{tabular}
+\end{table}

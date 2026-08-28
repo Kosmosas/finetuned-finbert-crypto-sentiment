@@ -9,22 +9,25 @@ The pipeline:
 ```mermaid
 flowchart LR
     A["Telegram headlines<br/><code>telegram_filtering</code>"]
-    B["Sentiment scoring<br/><code>sentiment_analysis</code>"]
-    C["iTransformer training<br/><code>transformers_training</code>"]
-    D["Backtesting & diagrams<br/><code>backtesting</code>"]
     W["Headline→price impact search<br/><code>weights_comparison_and_derive</code>"]
+    B["Headline scoring<br/><code>sentiment_analysis</code>"]
+    C["iTransformer<br/><code>itransformer_models</code>"]
+    D["LSTM<br/><code>lstm_models</code>"]
+    R["Consolidated tables & figures<br/><code>results</code>"]
 
-    A --> B --> C --> D
-    W -. sentiment targets .-> B
+    A --> B
+    W -- "sentiment targets" --> B
+    B --> C --> R
+    B --> D --> R
 ```
 
-A separate study (`weights_comparison_and_derive`) searches for the best
-headline-to-price impact parameters used to build the sentiment training targets.
+`weights_comparison_and_derive` searches for the headline-to-price impact
+parameters used to build the sentiment training targets; `sentiment_analysis`
+turns headlines into a continuous market-impact score; the two forecasting
+folders consume that score and produce the manuscript's forecasting and
+backtesting numbers.
 
-> **Disclaimer.** This is academic research, not financial advice. The sentiment
-> notebooks under `sentiment_analysis/` are *consultative* (see "Notes" below):
-> they were used for exploration and may not exactly reproduce the reported
-> experiments.
+> **Disclaimer.** This is academic research, not financial advice.
 
 ---
 
@@ -33,26 +36,21 @@ headline-to-price impact parameters used to build the sentiment training targets
 | Path | Pipeline step | Contents |
 |------|---------------|----------|
 | `telegram_filtering/` | 1. Headline preparation | `filter.ipynb` cleans raw Telegram exports (`result*.json`) into headline datasets (`cleaned*.csv`, `headlines.csv`). |
-| `weights_comparison_and_derive/` | 2. Headline→price impact search | `weights_derive.ipynb` derives the price-impact parameters from `BTCUSDT.csv` / `output.csv` / `ok.csv`. |
-| `sentiment_analysis/` | 3. Sentiment models | Sandbox notebooks for FinBERT, Finance-Qwen and TF-IDF (SVM/GBR), plus `sentiment_dataset_from_finbert.ipynb` that produces the predicted-sentiment dataset. |
-| `fine_tuned_BERT/` | 3. (model + example) | The fine-tuned FinBERT model, a clean scoring notebook, and a `README.md` describing how to run it. |
-| `transformers_training/` | 4. iTransformer training | Four notebooks training the time-series model on different feature sets: `price_only`, `technicals_only`, `sentiment_only`, `full_dataset`. |
-| `backtesting/` | 5. Backtesting & diagrams | Refactored backtesting notebooks + helper modules (`data_loader.py`, `backtest_functions.py`, `model_utils.py`, `utils.py`), input data in `data/`, and results in `backtest_results/`. |
+| `weights_comparison_and_derive/` | 2. Headline→price impact search | `weights_derive.ipynb` derives the price-impact parameters from `BTCUSDT.csv` / `output.csv` / `ok.csv`, and runs the label diagnostics. |
+| `sentiment_analysis/` | 3. Headline scoring | Out-of-fold FinBERT scoring (`oof_finbert_scoring.ipynb`, `oof_score_full_stream.ipynb`) plus the development-stage sandboxes: FinBERT, Finance-Qwen and the TF-IDF (SVM/GBR) baselines. |
+| `fine_tuned_BERT/` | 3. (model + example) | The released fine-tuned FinBERT model, a clean scoring notebook and a `README.md`. |
+| `itransformer_models/` | 4. iTransformer | Training, backtesting and diagram notebooks, plus `itransformer_common.py`. |
+| `lstm_models/` | 4. LSTM | The same study with a stacked LSTM; `lstm_common.py` holds the protocol both families share. |
+| `backtesting/` | — | Trading-strategy implementations (`backtest_functions.py`), the data-loading conventions (`data_loader.py`) and all input data under `data/`. |
+| `results/` | 5. Consolidation | `make_results.py` collects both model families into the tables and figures the manuscript reports. |
 | `scripts/` | — | Helpers to download/upload the large files hosted outside Git. |
 
-### Backtesting feature variants
-
-`backtesting/` contains one notebook per feature set, mirrored by the
-`backtest_results/<variant>/` output folders:
-
-- `backtesting-price-only-refactored.ipynb` → `backtest_results/price_only/`
-- `backtesting-technicals-only-refactored.ipynb` → `backtest_results/technicals_only/`
-- `backtesting-sentiment-only-refactored.ipynb` → `backtest_results/sentiment_only/`
-- `backtesting-full-refactored.ipynb` → `backtest_results/full_dataset/`
-- `backtesting_diagrams.ipynb` → produces the comparison plots from all results.
-
-Each variant runs three strategies (`threshold`, `momentum`, `risk_based`) over
-two validation periods (`-1`, `-2`).
+Both forecasting folders run the same three strategies (`threshold`,
+`risk_based`, `momentum`) over the same two held-out periods (`-1` uptrend, `-2`
+sideways), and import those strategies from
+`backtesting/backtest_functions.py`, so the two families are evaluated by
+literally the same code. See `itransformer_models/README.md` and
+`lstm_models/README.md` for the shared protocol and each folder's outputs.
 
 ---
 
@@ -63,23 +61,30 @@ repository. They are hosted on the **Hugging Face Hub** instead:
 
 | File (repo-relative path) | Size | Hosted at | Description |
 |---------------------------|------|-----------|-------------|
-| `fine_tuned_BERT/fine-tuned-finbert.pth` | ~419 MB | [model: Kosmosas/BERT-bitcoin-sentiment](https://huggingface.co/Kosmosas/BERT-bitcoin-sentiment) | Fine-tuned FinBERT sentiment-regression weights. |
-| `backtesting/data/BTCUSDT-last.csv` | ~393 MB | [dataset: …-assets](https://huggingface.co/datasets/Kosmosas/BERT-bitcoin-sentiment-assets) | 1-minute BTCUSDT OHLCV+volume (extended; used by backtesting). |
+| `sentiment_analysis/oof_checkpoints/finbert_oof_tone3_cond_fold{1..6}.pth` | ~419 MB each | [model: Kosmosas/BERT-bitcoin-sentiment](https://huggingface.co/Kosmosas/BERT-bitcoin-sentiment) | Out-of-fold FinBERT weights — the current headline scorer. **Fold 6 is the one to use**; it covers the paper's evaluation window. |
+| `fine_tuned_BERT/fine-tuned-finbert.pth` | ~419 MB | [model: Kosmosas/BERT-bitcoin-sentiment](https://huggingface.co/Kosmosas/BERT-bitcoin-sentiment) | The superseded single checkpoint. Kept because the paper reports an in-sample comparison against it. |
+| `backtesting/data/BTCUSDT-last.csv` | ~393 MB | [dataset: …-assets](https://huggingface.co/datasets/Kosmosas/BERT-bitcoin-sentiment-assets) | 1-minute BTCUSDT OHLCV+volume (extended; used by forecasting and backtesting). |
 | `weights_comparison_and_derive/BTCUSDT.csv` | ~363 MB | [dataset: …-assets](https://huggingface.co/datasets/Kosmosas/BERT-bitcoin-sentiment-assets) | 1-minute BTCUSDT OHLCV+volume (used by the impact-parameter study). |
 
 > The two `BTCUSDT*.csv` files look alike but are **different** snapshots
 > (different row counts / date ranges) — keep both.
 
+The two comparison runs of the out-of-fold scorer (`finbert_oof_tone3_*` and
+`finbert_oof_cls_*`, ~4 GB) are not published; rerun `oof_finbert_scoring.ipynb`
+with the matching `RUN_TAG` to rebuild them.
+
 ### Download
 
 ```bash
 pip install huggingface_hub
-python scripts/download_assets.py
+python scripts/download_assets.py           # the price CSVs and the old checkpoint
+python scripts/download_assets.py --all     # plus the 2.5 GB of out-of-fold weights
 ```
 
 Files land at their correct in-repo locations so the notebooks find them via
-their existing relative paths.
-
+their existing relative paths. The out-of-fold checkpoints are skipped by default
+— the scores they produced are committed under `backtesting/data/cleaned/`, so
+they are only needed to re-score headlines from scratch.
 
 ## Setup
 
@@ -90,18 +95,26 @@ python scripts/download_assets.py   # fetch the large files (see above)
 ```
 
 Open the notebooks in **VS Code** (with the Jupyter extension) or a local
-**Jupyter** server. A CUDA-capable GPU is **required** for the FinBERT and
-iTransformer notebooks.
+**Jupyter** server. Run each folder's notebooks from inside that folder — they
+resolve their inputs and outputs relative to the working directory. A
+CUDA-capable GPU is **required** for the FinBERT, iTransformer and LSTM
+notebooks.
 
 ---
 
 ## Notes
 
-- **Consultative notebooks.** The `sentiment_analysis/` sandboxes (and parts of
-  `transformers_training/`) were modified over time while experimenting with
-  parameters; the original run-for-run notebooks were not all preserved, so they
-  illustrate the approach rather than reproduce exact numbers.
-- **Colab origins.** Some sentiment notebooks contain
+- **Reproducibility of the backtests.** The strategy searches call
+  `study.optimize(..., n_jobs=8)`; Optuna's TPE sampler is not deterministic
+  under parallelism even with a fixed seed, so backtest point estimates carry
+  search noise. See `results/README.md` for the measured size of that effect.
+- **Sandbox notebooks.** The development-stage notebooks in
+  `sentiment_analysis/` were modified over time while experimenting with
+  parameters; the original run-for-run versions were not all preserved, so they
+  illustrate the approach rather than reproduce exact numbers. The out-of-fold
+  scoring notebooks in the same folder are the ones that produce the reported
+  headline scores.
+- **Colab origins.** Some sandbox notebooks contain
   `from google.colab import drive` and reference `/content/drive/...` paths —
   they were run on Google Colab and need their paths adjusted to run locally.
 - **Fine-tuned FinBERT.** See [`fine_tuned_BERT/README.md`](fine_tuned_BERT/README.md)
@@ -121,3 +134,4 @@ If you use this code or data, please cite the accompanying paper:
   year    = {TODO},
   doi     = {TODO}
 }
+```

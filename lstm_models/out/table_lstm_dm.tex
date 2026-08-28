@@ -1,0 +1,33 @@
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{threeparttable}
+\caption{Diebold--Mariano tests of equal predictive accuracy for the LSTM forecasts, on absolute errors of the seed-averaged forecast.}
+\label{tab:lstm_dm_tests}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{Regime} & \textbf{Comparison} & \textbf{n} & $\bar{d}$ & \textbf{DM} & $\bm{q_{BH}}$ \\
+\midrule
+Uptrend & Price + volume vs.\ zero change & 5,120 & -1.77 & -4.870 & 0.0000 \\
+Uptrend & Price + volume+sentiment vs.\ zero change & 5,120 & -0.76 & -1.810 & 0.0939 \\
+Uptrend & Price + volume+technicals vs.\ zero change & 5,120 & -1.04 & -3.862 & 0.0005 \\
+Uptrend & Full dataset vs.\ zero change & 5,120 & -1.44 & -4.177 & 0.0002 \\
+Uptrend & Price + volume+sentiment vs.\ Price + volume & 5,120 & +1.01 & +3.391 & 0.0021 \\
+Uptrend & Full dataset vs.\ Price + volume+technicals & 5,120 & -0.40 & -2.152 & 0.0629 \\
+\midrule
+Sideways & Price + volume vs.\ zero change & 3,621 & -1.29 & -1.994 & 0.0694 \\
+Sideways & Price + volume+sentiment vs.\ zero change & 3,621 & +0.29 & +0.388 & 0.6984 \\
+Sideways & Price + volume+technicals vs.\ zero change & 3,621 & -0.95 & -2.083 & 0.0640 \\
+Sideways & Full dataset vs.\ zero change & 3,621 & -0.78 & -1.400 & 0.1939 \\
+Sideways & Price + volume+sentiment vs.\ Price + volume & 3,621 & +1.58 & +3.149 & 0.0040 \\
+Sideways & Full dataset vs.\ Price + volume+technicals & 3,621 & +0.17 & +0.593 & 0.6033 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item \textit{Note:} $\bar{d}$ is the mean difference in absolute error (first model minus second), in USD. A negative DM statistic indicates the first model has the lower absolute error. The long-run variance uses a Newey--West estimator with the Harvey--Leybourne--Newbold small-sample correction; $q_{BH}$ is the Benjamini--Hochberg adjusted p-value across the whole family of tests in this table.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

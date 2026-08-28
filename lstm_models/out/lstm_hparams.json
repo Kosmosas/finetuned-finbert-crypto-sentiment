@@ -1,0 +1,34 @@
+{
+  "price+volume": {
+    "hidden_size": 128,
+    "num_layers": 2,
+    "dropout": 0.20461977970267692,
+    "lr": 0.004366130995298929,
+    "bidirectional": false,
+    "batch_size": 256
+  },
+  "price+volume+sentiment": {
+    "hidden_size": 128,
+    "num_layers": 2,
+    "dropout": 0.13844380867587955,
+    "lr": 0.0021957734465394567,
+    "bidirectional": false,
+    "batch_size": 256
+  },
+  "price+volume+technicals": {
+    "hidden_size": 128,
+    "num_layers": 2,
+    "dropout": 0.2424065840658545,
+    "lr": 0.001518837505794783,
+    "bidirectional": false,
+    "batch_size": 256
+  },
+  "full": {
+    "hidden_size": 64,
+    "num_layers": 1,
+    "dropout": 0.24900874672927037,
+    "lr": 0.0033235909373509004,
+    "bidirectional": false,
+    "batch_size": 256
+  }
+}

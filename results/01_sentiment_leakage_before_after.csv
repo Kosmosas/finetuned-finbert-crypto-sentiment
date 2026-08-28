@@ -1,0 +1,9 @@
+column,period,n,r_train_target,r_price_change_4h,sd,train_test_sd_ratio
+"single checkpoint, in-sample",train 2019-01 -> 2024-03,17563,0.4767,0.2129,0.03958,4.66
+"single checkpoint, in-sample",test  2024-03 -> 2025-03,2688,0.0712,0.0642,0.0085,
+"out-of-fold, pretrained tone head",train 2019-01 -> 2024-03,15049,0.0168,0.0268,0.99369,1.0
+"out-of-fold, pretrained tone head",test  2024-03 -> 2025-03,2688,0.0325,0.0293,0.99736,
+"out-of-fold, trained 768-d head",train 2019-01 -> 2024-03,15049,0.0009,0.0066,1.0559,1.01
+"out-of-fold, trained 768-d head",test  2024-03 -> 2025-03,2688,0.0323,0.0446,1.04891,
+"out-of-fold, standardised target",train 2019-01 -> 2024-03,15049,0.0108,0.01,1.07293,1.02
+"out-of-fold, standardised target",test  2024-03 -> 2025-03,2688,0.0753,0.0848,1.05039,

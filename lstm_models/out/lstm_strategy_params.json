@@ -1,0 +1,74 @@
+{
+  "price+volume|threshold": {
+    "threshold": 0.013838015602915532,
+    "hold_hours": 159
+  },
+  "price+volume|risk_based": {
+    "threshold": 0.01448625596994968,
+    "target_risk": 1.2878364962973963,
+    "hold_hours": 164
+  },
+  "price+volume|momentum": {
+    "lookback": 70,
+    "hold_hours": 118,
+    "signal_thresh": 0.8683073863751325,
+    "target_risk": 0.1804877302849968
+  },
+  "price+volume+sentiment|threshold": {
+    "threshold": 0.09866965886395825,
+    "hold_hours": 62
+  },
+  "price+volume+sentiment|risk_based": {
+    "threshold": 0.09537469336230812,
+    "target_risk": 1.2877105571010719,
+    "hold_hours": 33
+  },
+  "price+volume+sentiment|momentum": {
+    "lookback": 71,
+    "hold_hours": 56,
+    "signal_thresh": 0.9279458988870071,
+    "target_risk": 0.07620260056878536
+  },
+  "price+volume+technicals|threshold": {
+    "threshold": 0.02972446079170374,
+    "hold_hours": 75
+  },
+  "price+volume+technicals|risk_based": {
+    "threshold": 0.07462144338847386,
+    "target_risk": 2.123019710194169,
+    "hold_hours": 89
+  },
+  "price+volume+technicals|momentum": {
+    "lookback": 14,
+    "hold_hours": 120,
+    "signal_thresh": 1.051638075921505,
+    "target_risk": 0.14786312489225484
+  },
+  "full|threshold": {
+    "threshold": 0.07221855894234866,
+    "hold_hours": 92
+  },
+  "full|risk_based": {
+    "threshold": 0.08588435914008394,
+    "target_risk": 1.604537333983081,
+    "hold_hours": 81
+  },
+  "full|momentum": {
+    "lookback": 69,
+    "hold_hours": 71,
+    "signal_thresh": 1.1681541775026794,
+    "target_risk": 0.0975102571313759
+  },
+  "no_model_zero|momentum": {
+    "lookback": 70,
+    "hold_hours": 62,
+    "signal_thresh": 1.1000357242947865,
+    "target_risk": 0.25809136013994394
+  },
+  "no_model_shuffled|momentum": {
+    "lookback": 70,
+    "hold_hours": 119,
+    "signal_thresh": 1.1455698212466119,
+    "target_risk": 0.09020592897000697
+  }
+}

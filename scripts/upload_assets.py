@@ -8,8 +8,9 @@ Usage:
     python scripts/upload_assets.py finbert   # only assets whose path matches a filter
 
 Creates each target repo if it does not exist, then uploads each asset to the
-repo and path declared in scripts/assets_manifest.py. If a model card exists at
-scripts/model_card.md it is uploaded as the model repo's README.md.
+repo and path declared in scripts/assets_manifest.py. Repo cards at
+scripts/model_card.md and scripts/dataset_card.md are uploaded as the model and
+dataset repos' README.md.
 """
 import os
 import sys
@@ -21,7 +22,10 @@ from assets_manifest import ASSETS, HF_MODEL_REPO, repo_url  # noqa: E402
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
-MODEL_CARD = os.path.join(SCRIPT_DIR, "model_card.md")
+CARDS = {
+    "model": os.path.join(SCRIPT_DIR, "model_card.md"),
+    "dataset": os.path.join(SCRIPT_DIR, "dataset_card.md"),
+}
 
 
 def main() -> None:
@@ -42,14 +46,15 @@ def main() -> None:
         if key not in created:
             create_repo(asset["repo_id"], repo_type=asset["repo_type"], exist_ok=True)
             created.add(key)
-            # Attach the model card to the model repo, if present.
-            if asset["repo_type"] == "model" and os.path.exists(MODEL_CARD):
-                print(f"[put ] model card -> {asset['repo_id']}/README.md")
+            # Attach the repo card, if one exists for this repo type.
+            card = CARDS.get(asset["repo_type"])
+            if card and os.path.exists(card):
+                print(f"[put ] {asset['repo_type']} card -> {asset['repo_id']}/README.md")
                 api.upload_file(
-                    path_or_fileobj=MODEL_CARD,
+                    path_or_fileobj=card,
                     path_in_repo="README.md",
                     repo_id=asset["repo_id"],
-                    repo_type="model",
+                    repo_type=asset["repo_type"],
                 )
 
         print(f"[put ] {asset['path']} -> {asset['repo_id']}/{asset['path_in_repo']}")

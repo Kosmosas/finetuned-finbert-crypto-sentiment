@@ -1,9 +1,0 @@
-datetime,trade_index,portfolio_value,trade_type,strategy
-2025-01-08 00:00:00,0,10000.0,start,Threshold Backtest P2
-2025-01-21 15:00:00,327,9997.2775,long,Threshold Backtest P2
-2025-01-25 07:00:00,415,10039.589680463403,exit_long,Threshold Backtest P2
-2025-03-03 21:00:00,1317,10036.856402172896,long,Threshold Backtest P2
-2025-03-07 11:00:00,1403,10455.390110047454,exit_long,Threshold Backtest P2
-2025-03-07 11:00:00,1403,10452.543630089993,short,Threshold Backtest P2
-2025-03-11 03:00:00,1491,11618.809357033419,exit_short,Threshold Backtest P2
-2025-06-30 23:00:00,4175,11618.809357033419,end,Threshold Backtest P2

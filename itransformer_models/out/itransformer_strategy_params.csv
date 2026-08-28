@@ -1,0 +1,13 @@
+feature_set,strategy,threshold,hold_hours,target_risk,lookback,signal_thresh
+price+volume,threshold,0.09824948549351001,66,,,
+price+volume,risk_based,0.09344056378651035,150,1.576661444681838,,
+price+volume,momentum,,132,0.08007035190104661,18.0,0.8881214019787144
+price+volume+sentiment,threshold,0.08152439973010132,35,,,
+price+volume+sentiment,risk_based,0.08260371179474425,39,1.8724657592010296,,
+price+volume+sentiment,momentum,,58,0.15147459154089088,70.0,1.2779328715254559
+price+volume+technicals,threshold,0.4054482475143224,55,,,
+price+volume+technicals,risk_based,0.43058218140637033,23,0.7257458783964243,,
+price+volume+technicals,momentum,,53,0.10163886420649192,100.0,0.5499267152258371
+full,threshold,0.34146379264602283,136,,,
+full,risk_based,0.1049120598754068,97,2.4128649066430503,,
+full,momentum,,125,0.11505202103730502,71.0,0.8235806918065915

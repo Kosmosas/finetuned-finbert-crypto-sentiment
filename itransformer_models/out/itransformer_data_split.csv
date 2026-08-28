@@ -1,0 +1,5 @@
+feature_set,variates,rows,fit,inner_val,uptrend,sideways
+price+volume,4,50290,35033,2880,5136,3624
+price+volume+sentiment,5,50282,35025,2880,5136,3624
+price+volume+technicals,10,50131,34907,2875,5120,3621
+full,11,50131,34907,2875,5120,3621

@@ -1,0 +1,29 @@
+family,regime,baseline,model,DM,p,n,q_BH
+iTransformer,Uptrend,zero change,Price + volume,-0.885,0.3762,5120,0.5267
+iTransformer,Uptrend,zero change,Price + volume + sentiment,-0.0253,0.9798,5120,0.9798
+iTransformer,Uptrend,zero change,Price + volume + technicals,-1.1432,0.253,5120,0.4428
+iTransformer,Uptrend,zero change,Full dataset,3.0666,0.0022,5120,0.0152
+iTransformer,Uptrend,Price + volume,Price + volume + sentiment,0.8929,0.372,5120,0.5267
+iTransformer,Uptrend,Price + volume,Price + volume + technicals,-0.1253,0.9003,5120,0.9695
+iTransformer,Uptrend,Price + volume,Full dataset,3.5638,0.0004,5120,0.0052
+iTransformer,Sideways,zero change,Price + volume,1.9852,0.0472,3621,0.1652
+iTransformer,Sideways,zero change,Price + volume + sentiment,0.771,0.4407,3621,0.5609
+iTransformer,Sideways,zero change,Price + volume + technicals,1.4515,0.1467,3621,0.3648
+iTransformer,Sideways,zero change,Full dataset,2.6548,0.008,3621,0.0372
+iTransformer,Sideways,Price + volume,Price + volume + sentiment,-1.3336,0.1824,3621,0.3648
+iTransformer,Sideways,Price + volume,Price + volume + technicals,-0.4768,0.6335,3621,0.7391
+iTransformer,Sideways,Price + volume,Full dataset,1.3911,0.1643,3621,0.3648
+LSTM,Uptrend,zero change,Price + volume,-4.8705,0.0,5120,0.0
+LSTM,Uptrend,zero change,Price + volume + sentiment,-1.8095,0.0704,5120,0.1096
+LSTM,Uptrend,zero change,Price + volume + technicals,-3.8622,0.0001,5120,0.0005
+LSTM,Uptrend,zero change,Full dataset,-4.1767,0.0,5120,0.0002
+LSTM,Uptrend,Price + volume,Price + volume + sentiment,3.3912,0.0007,5120,0.002
+LSTM,Uptrend,Price + volume,Price + volume + technicals,3.5151,0.0004,5120,0.0016
+LSTM,Uptrend,Price + volume,Full dataset,1.6417,0.1007,5120,0.141
+LSTM,Sideways,zero change,Price + volume,-1.9937,0.0463,3621,0.081
+LSTM,Sideways,zero change,Price + volume + sentiment,0.3875,0.6984,3621,0.6984
+LSTM,Sideways,zero change,Price + volume + technicals,-2.0826,0.0374,3621,0.0747
+LSTM,Sideways,zero change,Full dataset,-1.4001,0.1616,3621,0.1885
+LSTM,Sideways,Price + volume,Price + volume + sentiment,3.1495,0.0016,3621,0.0038
+LSTM,Sideways,Price + volume,Price + volume + technicals,0.8905,0.3733,3621,0.402
+LSTM,Sideways,Price + volume,Full dataset,1.4745,0.1404,3621,0.1787

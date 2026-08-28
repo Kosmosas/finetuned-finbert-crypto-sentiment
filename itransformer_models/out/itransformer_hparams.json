@@ -1,0 +1,42 @@
+{
+  "price+volume": {
+    "dim": 64,
+    "depth": 1,
+    "heads": 8,
+    "dim_head": 32,
+    "lr": 0.00888613678919141,
+    "batch_size": 1024,
+    "accumulation_steps": 1,
+    "shuffle": true
+  },
+  "price+volume+sentiment": {
+    "dim": 64,
+    "depth": 2,
+    "heads": 8,
+    "dim_head": 32,
+    "lr": 0.007233791015267298,
+    "batch_size": 1024,
+    "accumulation_steps": 1,
+    "shuffle": true
+  },
+  "price+volume+technicals": {
+    "dim": 64,
+    "depth": 3,
+    "heads": 16,
+    "dim_head": 32,
+    "lr": 0.007719506945000101,
+    "batch_size": 1024,
+    "accumulation_steps": 1,
+    "shuffle": true
+  },
+  "full": {
+    "dim": 128,
+    "depth": 2,
+    "heads": 16,
+    "dim_head": 32,
+    "lr": 0.009601969540235454,
+    "batch_size": 1024,
+    "accumulation_steps": 1,
+    "shuffle": true
+  }
+}

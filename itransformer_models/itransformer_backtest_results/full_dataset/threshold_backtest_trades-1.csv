@@ -1,0 +1,3 @@
+datetime,trade_index,portfolio_value,trade_type,strategy
+2024-06-08 00:00:00+00:00,0,10000.0,start,Threshold Uptrend — Full dataset
+2024-11-30 23:00:00+00:00,4207,10000.0,end,Threshold Uptrend — Full dataset

@@ -1,0 +1,60 @@
+\begin{table}[htbp]
+	\centering
+	\renewcommand{\arraystretch}{1.1}
+	\scriptsize
+	\begin{minipage}[t]{0.48\textwidth}
+		\centering
+			\begin{tabular}{|p{3.4cm}|p{1.8cm}|p{1.5cm}|}
+			\hline
+				Dataset & \textbf{Threshold ($\tau$)} & \textbf{Hold ($H$)} \\
+			\hline
+				Price + volume & $\mathbf{0.10\%}$ & $\mathbf{66}$ h \\
+			\hline
+				Price + volume + sentiment & $\mathbf{0.08\%}$ & $\mathbf{35}$ h \\
+			\hline
+				Price + volume + technicals & $\mathbf{0.41\%}$ & $\mathbf{55}$ h \\
+			\hline
+				Full dataset & $\mathbf{0.34\%}$ & $\mathbf{136}$ h \\
+			\hline
+			\end{tabular}
+		\subcaption{Threshold strategy}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.48\textwidth}
+		\centering
+			\begin{tabular}{|p{3.0cm}|p{1.5cm}|p{1.3cm}|p{1.1cm}|}
+			\hline
+				Dataset & \textbf{Threshold ($\tau$)} & \textbf{Target Risk} & \textbf{Hold ($H$)} \\
+			\hline
+				Price + volume & $\mathbf{0.09\%}$ & $\mathbf{1.58}$ & $\mathbf{150}$ h \\
+			\hline
+				Price + volume + sentiment & $\mathbf{0.08\%}$ & $\mathbf{1.87}$ & $\mathbf{39}$ h \\
+			\hline
+				Price + volume + technicals & $\mathbf{0.43\%}$ & $\mathbf{0.73}$ & $\mathbf{23}$ h \\
+			\hline
+				Full dataset & $\mathbf{0.10\%}$ & $\mathbf{2.41}$ & $\mathbf{97}$ h \\
+			\hline
+			\end{tabular}
+		\subcaption{Risk-based (volatility-adjusted)}
+	\end{minipage}
+	\par\vspace{0.6em}
+	\begin{minipage}[t]{0.7\textwidth}
+		\centering
+			\begin{tabular}{|p{3.4cm}|p{1.5cm}|p{1.6cm}|p{1.4cm}|p{1.2cm}|}
+			\hline
+				Dataset & \textbf{Lookback ($L$)} & \textbf{Threshold ($\tau$)} & \textbf{Target Risk} & \textbf{Hold ($H$)} \\
+			\hline
+				Price + volume & $\mathbf{18}$ & $\mathbf{0.888\%}$ & $\mathbf{0.080}$ & $\mathbf{132}$ h \\
+			\hline
+				Price + volume + sentiment & $\mathbf{70}$ & $\mathbf{1.278\%}$ & $\mathbf{0.151}$ & $\mathbf{58}$ h \\
+			\hline
+				Price + volume + technicals & $\mathbf{100}$ & $\mathbf{0.550\%}$ & $\mathbf{0.102}$ & $\mathbf{53}$ h \\
+			\hline
+				Full dataset & $\mathbf{71}$ & $\mathbf{0.824\%}$ & $\mathbf{0.115}$ & $\mathbf{125}$ h \\
+			\hline
+			\end{tabular}
+		\subcaption{Momentum}
+	\end{minipage}
+	\caption{Optimized iTransformer trading hyperparameters via CV+Optuna. Values shown per dataset and strategy.}
+	\label{tab:itransformer_hyperparams_summary}
+\end{table}

@@ -1,0 +1,5 @@
+column,target,n,r,hac_se,hac_p
+single checkpoint (in-sample fitted),volume_surge_price,2688,0.0712,0.0328,0.03
+single checkpoint (in-sample fitted),price_change_4h,2688,0.0642,0.0297,0.0309
+out-of-fold (final),volume_surge_price,2688,0.0753,0.0209,0.0003
+out-of-fold (final),price_change_4h,2688,0.0848,0.0248,0.0006

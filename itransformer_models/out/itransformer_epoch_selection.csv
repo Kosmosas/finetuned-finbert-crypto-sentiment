@@ -1,0 +1,13 @@
+feature_set,seed,epochs,inner_val_mae
+price+volume,0,3,231.5213165283203
+price+volume,1,2,231.196044921875
+price+volume,2,2,232.25466918945312
+price+volume+sentiment,0,3,230.6146697998047
+price+volume+sentiment,1,2,231.0774688720703
+price+volume+sentiment,2,2,230.29066467285156
+price+volume+technicals,0,5,230.6896514892578
+price+volume+technicals,1,2,230.8794403076172
+price+volume+technicals,2,4,231.2588653564453
+full,0,2,234.453125
+full,1,2,229.96734619140625
+full,2,2,233.42552185058594

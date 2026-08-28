@@ -1,0 +1,5 @@
+feature_set,strategy,regime,trade_rows,entries,final_value,returns_pct,sharpe_annualised,max_dd_pct
+Pure time-series momentum (no forecast),Momentum,Uptrend,163,81,10802.502135682646,8.025021356826455,2.3818115109177076,3.6757721300391344
+Pure time-series momentum (no forecast),Momentum,Sideways,191,95,9594.104906182874,-4.058950938171256,-1.296704302481018,5.086693203647242
+Momentum with time-shuffled forecast,Momentum,Uptrend,207,103,11679.389450486315,16.793894504863147,2.299423764905213,7.345690399283777
+Momentum with time-shuffled forecast,Momentum,Sideways,219,109,9407.540392234989,-5.924596077650112,-0.8526067325114147,8.361628242528617

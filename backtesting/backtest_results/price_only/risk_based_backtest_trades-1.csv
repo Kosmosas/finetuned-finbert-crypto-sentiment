@@ -1,3 +1,0 @@
-datetime,trade_index,portfolio_value,trade_type,strategy
-2024-06-08 00:00:00,0,10000,start,Risk-Based Backtest P1
-2024-11-30 23:00:00,4223,10000,end,Risk-Based Backtest P1

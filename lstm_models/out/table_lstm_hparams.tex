@@ -1,0 +1,24 @@
+\begin{table}[ht]
+\footnotesize
+\centering
+\begin{threeparttable}
+\caption{Final LSTM hyperparameters for the four forecasting feature sets.}
+\label{tab:lstm_hparams}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Feature set} & \textbf{hidden} & \textbf{layers} & \textbf{dropout} & \textbf{lr} \\
+\midrule
+Price + volume & 128 & 2 & 0.205 & 0.004366 \\
+Price + volume + sentiment & 128 & 2 & 0.138 & 0.002196 \\
+Price + volume + technicals & 128 & 2 & 0.242 & 0.001519 \\
+Full dataset & 64 & 1 & 0.249 & 0.003324 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item \textit{Note:} Selected by an Optuna study per feature set (50 trials with median pruning, each trial trained for 5 epochs on a reduced corpus of the first 10,000 training sequences, 5,000 for the price-and-volume set), scored by validation MAE on the inner-validation slice of the training period. The encoder is a unidirectional stacked LSTM with a linear head on the final hidden state. Batch size 256 and AdamW with the Huber loss on the standardised target are common to all runs.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

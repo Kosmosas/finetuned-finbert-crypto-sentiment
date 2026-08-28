@@ -5,6 +5,13 @@ fine_tuned_BERT/fine-tuned-finbert.pth
 backtesting/data/BTCUSDT-last.csv
 weights_comparison_and_derive/BTCUSDT.csv
 
+# --- Regenerable intermediates ---
+# Per-fold FinBERT checkpoints (~6.6 GB); rebuilt by
+# sentiment_analysis/oof_finbert_scoring.ipynb.
+sentiment_analysis/oof_checkpoints/
+# Parsed hourly feature sets, rebuilt on first run of each 01_* notebook.
+*/cache/
+
 # --- Jupyter / Python noise ---
 .ipynb_checkpoints/
 __pycache__/
