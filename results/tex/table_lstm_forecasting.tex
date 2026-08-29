@@ -1,0 +1,31 @@
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{threeparttable}
+\caption{Out-of-sample LSTM forecasting performance across validation regimes. All feature sets share one date window, one chronological split (training to 2024-04-30, May 2024 buffer), standardised inputs and target, and epoch selection on a held-out inner validation slice. Values are mean $\pm$ standard deviation over 3 seeds.}
+\label{tab:lstm_forecasting_performance_results}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrccccc}
+\toprule
+\textbf{Regime} & \textbf{Feature set} & \textbf{n} & \textbf{MAE (USD)} & \textbf{RMSE (USD)} & \textbf{MAE (\%)} & \textbf{Corr.} & \textbf{Dir. Acc. (\%)} \\
+\midrule
+Uptrend & Price + volume & 5,136 & $255.0 \pm 0.3$ & $396.3 \pm 0.4$ & 0.355 & $+0.0559 \pm 0.0081$ & $53.16 \pm 0.67$ \\
+Uptrend & Price + volume + sentiment & 5,136 & $256.3 \pm 0.5$ & $397.2 \pm 0.5$ & 0.357 & $+0.0475 \pm 0.0065$ & $51.83 \pm 0.65$ \\
+Uptrend & Price + volume + technicals & 5,120 & $255.9 \pm 0.0$ & $396.8 \pm 0.1$ & 0.356 & $+0.0428 \pm 0.0023$ & $52.82 \pm 0.41$ \\
+Uptrend & Full dataset & 5,120 & $255.6 \pm 0.4$ & $396.5 \pm 0.2$ & 0.356 & $+0.0572 \pm 0.0056$ & $53.19 \pm 0.69$ \\
+\addlinespace Uptrend & \textit{Zero-change benchmark} & -- & \textit{256.8} & -- & -- & -- & -- \\
+\midrule
+Sideways & Price + volume & 3,624 & $332.8 \pm 0.5$ & $514.0 \pm 0.2$ & 0.358 & $+0.0333 \pm 0.0096$ & $52.53 \pm 0.21$ \\
+Sideways & Price + volume + sentiment & 3,624 & $335.0 \pm 1.5$ & $515.6 \pm 1.7$ & 0.360 & $+0.0267 \pm 0.0075$ & $51.73 \pm 0.56$ \\
+Sideways & Price + volume + technicals & 3,621 & $332.8 \pm 0.0$ & $513.6 \pm 0.3$ & 0.358 & $+0.0309 \pm 0.0032$ & $52.72 \pm 0.22$ \\
+Sideways & Full dataset & 3,621 & $333.4 \pm 0.4$ & $514.1 \pm 0.6$ & 0.358 & $+0.0313 \pm 0.0060$ & $51.40 \pm 0.18$ \\
+\addlinespace Sideways & \textit{Zero-change benchmark} & -- & \textit{333.6} & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item \textit{Note:} Values are mean $\pm$ standard deviation over 3 seeds. The target is the next-hour change in the BTCUSDT close, reported in USD and as a percentage of the price at the forecast origin. Correlation denotes the Pearson correlation between predicted and realized next-hour price changes; directional accuracy reports the percentage of observations for which the predicted and realized signs agree. Diebold--Mariano tests are reported in Table~\ref{tab:lstm_dm_tests}: 3 of 8 comparisons against the zero-change benchmark are significant at $q<0.05$, 0 of them with a \emph{positive} statistic, i.e.\ the fitted model has the \emph{higher} absolute error.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

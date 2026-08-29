@@ -6,7 +6,15 @@ write; nothing is transcribed by hand.
 
 ```bash
 python make_results.py          # run from this directory
+python make_dm_tables.py        # then rewrite both DM tables in one format
 ```
+
+`make_dm_tables.py` exists because the two notebooks each write their own
+Diebold–Mariano table and the two ended up reporting different columns — the
+iTransformer table omitted the mean loss differential, the LSTM table the raw
+p-value. Every statistic is present in the source CSVs, so it rewrites both with
+`d̄`, DM, raw `p` and BH-adjusted `q`. Run it after `make_results.py`, which
+copies the notebooks' versions into `tex/`.
 
 ## Where the inputs come from
 

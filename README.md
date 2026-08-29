@@ -42,7 +42,8 @@ backtesting numbers.
 | `itransformer_models/` | 4. iTransformer | Training, backtesting and diagram notebooks, plus `itransformer_common.py`. |
 | `lstm_models/` | 4. LSTM | The same study with a stacked LSTM; `lstm_common.py` holds the protocol both families share. |
 | `backtesting/` | — | Trading-strategy implementations (`backtest_functions.py`), the data-loading conventions (`data_loader.py`) and all input data under `data/`. |
-| `results/` | 5. Consolidation | `make_results.py` collects both model families into the tables and figures the manuscript reports. |
+| `results/` | 5. Consolidation | `make_results.py` collects both model families into the tables and figures the manuscript reports; `make_dm_tables.py` writes both Diebold–Mariano tables in one uniform format. |
+| `diagnostics/` | — | Read-only scripts that re-derive the methodological claims the manuscript makes (what is trainable in the scoring model, how inputs are normalised, training-interval and sequence counts, in-sample share of the strategy search). See `diagnostics/README.md`. |
 | `scripts/` | — | Helpers to download/upload the large files hosted outside Git. |
 
 Both forecasting folders run the same three strategies (`threshold`,

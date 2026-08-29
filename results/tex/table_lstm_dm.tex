@@ -1,0 +1,33 @@
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{threeparttable}
+\caption{Diebold--Mariano tests of equal predictive accuracy for the LSTM forecasts, on absolute errors of the seed-averaged forecast.}
+\label{tab:lstm_dm_tests}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{llrrrrr}
+\toprule
+\textbf{Period} & \textbf{Comparison} & \textbf{n} & $\bm{\bar{d}}$ & \textbf{DM} & $\bm{p}$ & $\bm{q_{BH}}$ \\
+\midrule
+Uptrend & price+volume vs zero change & 5,120 & -1.769 & -4.870 & $<0.0001$ & $<0.0001$ \\
+Uptrend & price+volume+sentiment vs zero change & 5,120 & -0.764 & -1.810 & 0.0704 & 0.0939 \\
+Uptrend & price+volume+technicals vs zero change & 5,120 & -1.035 & -3.862 & 0.0001 & 0.0005 \\
+Uptrend & full vs zero change & 5,120 & -1.438 & -4.177 & $<0.0001$ & 0.0002 \\
+Uptrend & price+volume+sentiment vs price+volume & 5,120 & 1.005 & 3.391 & 0.0007 & 0.0021 \\
+Uptrend & full vs price+volume+technicals & 5,120 & -0.403 & -2.152 & 0.0314 & 0.0629 \\
+\midrule
+Sideways & price+volume vs zero change & 3,621 & -1.295 & -1.994 & 0.0463 & 0.0694 \\
+Sideways & price+volume+sentiment vs zero change & 3,621 & 0.290 & 0.388 & 0.6984 & 0.6984 \\
+Sideways & price+volume+technicals vs zero change & 3,621 & -0.950 & -2.083 & 0.0374 & 0.0640 \\
+Sideways & full vs zero change & 3,621 & -0.777 & -1.400 & 0.1616 & 0.1939 \\
+Sideways & price+volume+sentiment vs price+volume & 3,621 & 1.584 & 3.149 & 0.0016 & 0.0040 \\
+Sideways & full vs price+volume+technicals & 3,621 & 0.173 & 0.593 & 0.5530 & 0.6033 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item \textit{Note:} $\bar{d}$ is the mean difference in absolute forecast error (first model minus second), in USD. A negative DM statistic indicates lower absolute error for the first model. The long-run variance uses a Newey--West estimator with the Harvey--Leybourne--Newbold small-sample correction. $p$ is the unadjusted p-value and $q_{BH}$ the Benjamini--Hochberg adjusted p-value across the whole family of tests in this table.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

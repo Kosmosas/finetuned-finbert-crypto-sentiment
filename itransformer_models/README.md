@@ -56,6 +56,16 @@ figures, and the LaTeX drop-ins (`table_itransformer_*.tex`). Trade logs go to
 LSTM run. `../results/make_results.py` consolidates both families into the
 tables and figures the manuscript reports.
 
+## Matched-training-set check
+
+`matched_training_check.py` reruns Price + volume and Price + volume + sentiment
+on the *intersection* of their hourly indices, so the two models see exactly the
+same rows, windows and targets. The two sets already share one date window
+(2020-01-01 onward, enforced by `ANALYSIS_START`); they differ only in 8 hours out
+of 50,290 that the sentiment column is missing. Matching them moves MAE by at
+most 0.5 USD, inside the seed spread. Outputs: `out/matched_training_split.csv`,
+`out/matched_training_forecasting.csv`. Runtime ~1.5 min.
+
 ## Reproducibility caveat
 
 `02_itransformer_backtesting.ipynb` calls `study.optimize(..., n_jobs=8)`, and

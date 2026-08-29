@@ -1,0 +1,80 @@
+% Backtest mechanics as implemented in code.
+% Sources: backtesting/backtest_functions.py, lstm_models/lstm_common.py,
+% itransformer_models/02_itransformer_backtesting.ipynb, lstm_models/02_lstm_backtesting.ipynb,
+% lstm_models/03_lstm_diagrams.ipynb (metrics table).
+
+\subsection{Backtest implementation}
+
+Both model families are evaluated by the same code: the three strategies are imported
+from \texttt{backtest\_functions.py} and the metrics, parameter search and evaluation
+windows come from a single shared module, so the iTransformer and LSTM tables differ
+only in the forecast that drives the signal.
+
+\paragraph{Signal, entry and exit.}
+The strategies act on a predicted percentage change. For the threshold and
+volatility-adjusted strategies this is $\hat{r}_i = \hat{y}_i / P_{i-1}$, where
+$\hat{y}_i$ is the model's forecast of the next hourly change; for the momentum
+strategy it is
+$\hat{r}_i = (P_{i-1} + \hat{y}_i - P_{i-L}) / P_{i-L}$ with lookback $L$, so the
+forecast enters as a single additive term against a lookback move that is typically
+orders of magnitude larger. A long is opened when $\hat{r}_i > \tau$, a short when
+$\hat{r}_i < -\tau$, and no position otherwise. An open position is closed after
+$H$ (\texttt{hold\_hours}) bars, or flipped immediately to the opposite side if the
+reverse signal fires; a flip is recorded as an exit plus an entry and is charged the
+transaction cost a second time. Positions are $\pm 1$ and fully symmetric; there is no
+borrowing cost, margin model or liquidation logic.
+
+\paragraph{Position size and leverage.}
+The threshold strategy commits a constant $0.99$ of capital. The volatility-adjusted
+and momentum strategies use
+$w = \mathrm{clip}\!\left(\rho / \sigma_{i-1},\, 0.05,\, 1.00\right)$,
+where $\rho$ is the tuned per-trade risk target and $\sigma$ is a 720-hour (30-day)
+rolling standard deviation of hourly returns. The size is fixed at entry from the
+volatility observed at $i-1$, so no look-ahead enters the sizing, and the cap of
+$1.00$ means \textbf{leverage is never used}; minimum exposure is 5\%. Capital
+compounds hourly as $C \leftarrow C\,(1 + s\,w\,r_i)$ with $s \in \{-1,0,1\}$ and
+$r_i$ the realised hourly return.
+
+\paragraph{Transaction costs.}
+A single \texttt{transaction\_cost\_pct} of $0.0275\%$ is charged as $w \cdot C \cdot c$
+on \textbf{entries only}. \textbf{No bid--ask spread, slippage,
+funding rate, borrow fee or liquidation constraint is modelled anywhere in the code.}
+For a symmetric long/short book on perpetual-style exposure this is a material
+omission and the reported returns should be read as an upper bound.
+
+\paragraph{Sharpe ratio and annualisation.}
+Two different quantities appear, and they are not interchangeable.
+\emph{(i)~The selection Sharpe} is annualised and computed on the hourly
+portfolio-value path, including hours with no exposure:
+$r_t = (V_t - V_{t-1})/V_{t-1}$, then
+$\mathrm{SR} = \left(\bar{r} - r_f\right)/\mathrm{sd}(r)\times\sqrt{8760}$,
+with the population standard deviation (\texttt{np.std}, $\mathrm{ddof}=0$) and
+$8760$ hourly observations per year, which is correct for a market trading 24/7.
+The \textbf{risk-free rate is $r_f = 0$} and is never overridden.
+\emph{(ii)~The \emph{Sharpe} column of the backtesting results table} is a different
+statistic: the unannualised mean-to-standard-deviation ratio of \emph{trade-to-trade}
+portfolio returns taken from the trade log. It should not be compared with annualised
+figures from the literature.
+
+\paragraph{Parameter selection.}
+Strategy parameters are tuned on the training period only, by a single Optuna study per
+strategy and feature set whose objective is the \textbf{mean annualised Sharpe across ten
+chronological folds} (\texttt{KFold}, no shuffling); the earlier procedure of running one
+study per fold and averaging the per-fold winners was replaced, since averaging argmaxes
+optimises nothing and is undefined for integer parameters. Search spaces:
+$\tau\in[0.01,2.0]\%$, $H\in[1,168]\,\mathrm{h}$, $\rho\in[0,2.5]\%$,
+$L\in[1,168]\,\mathrm{h}$; budgets of 200/500/1000 trials for the threshold,
+volatility-adjusted and momentum strategies. Initial capital is \$10{,}000 in every run.
+Because the study is executed with \texttt{n\_jobs=8}, Optuna's TPE sampler is not
+deterministic even under a fixed seed, so repeated runs of identical code select
+different parameters; strategy-level point estimates therefore carry search noise.
+
+\paragraph{Regime windows.}
+The uptrend and sideways periods are hard-coded constants
+(2024-06-01--2024-12-01 and 2025-01-01--2025-07-01) in
+\texttt{backtesting/data\_loader.py}. \textbf{No trend statistic, volatility filter or
+regime-detection rule derives them from data}: they were chosen ex post as two
+representative market phases. December 2024 falls in neither window, and the
+forecasting stage uses slightly different windows than the backtest, so an ``uptrend''
+sample in the forecasting table is not the same set of hours as in the backtesting
+table.

@@ -1,0 +1,109 @@
+\begin{table}[htbp]
+\centering
+\caption{Hyperparameter search space for the headline scoring model, and the value taken for each. ``Fixed'' denotes a quantity that was set before the search rather than optimised over; the candidate values shown for those rows are the alternatives present in the search code but disabled.}
+\label{tab:finbert_hparams_space}
+\begin{tabular}{llll}
+\hline
+Hyperparameter & Values considered & Selected & Stage \\
+\hline
+        Unfrozen encoder blocks & 1, 2, 3 & 2 & Layer sweep \\
+        Learning rate & log-uniform $[10^{-5},\,10^{-3}]$ & $7.35\times10^{-5}$ & Optuna \\
+        Weight decay & $[5\times10^{-4},\,5\times10^{-2}]$ & 0.094$^{\dagger}$ & Optuna \\
+        Optimiser & AdamW, SGD, RMSprop & AdamW & Fixed \\
+        Batch size & 8, 16 & 9 & Fixed \\
+        Max sequence length & 64, 128 & 128 & Fixed \\
+        Momentum & $[0.001,\,0.4]$ & 0 (unused by AdamW) & Fixed \\
+        Huber $\delta$ & not searched & 1 & Fixed \\
+        Epochs & not searched & 100 & Fixed \\
+        Regression head & not searched & frozen \texttt{Linear(3,1)} & Fixed \\
+\hline
+\end{tabular}
+\par\smallskip
+\footnotesize $^{\dagger}$ The value carried forward, 0.094, lies outside the range the search covered; it is reported as used.
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Departures from the published configuration made for the out-of-fold re-scoring.}
+\label{tab:finbert_hparams_changes}
+\begin{tabular}{llll}
+\hline
+Setting & Published & Used here & Reason \\
+\hline
+        Batch size & 9 & 64 & throughput; 170 to 490 samples/s \\
+        Learning rate & $7.35\times10^{-5}$ & $1.96\times10^{-4}$ & rescaled by $\sqrt{64/9}$ \\
+        Precision & fp32 & fp16 (AMP) & throughput \\
+        Epoch budget & 100, fixed & $\leq$100, patience 5 & stop on each fold's own validation slice \\
+        Target scaling & raw & per-fold $z$ & output sd 0.698 vs target sd 0.058 at init \\
+        Output activation & $\tanh$ & linear & a standardised target cannot fit in $(-1,1)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Training configuration of the headline scoring model, as run.}
+\label{tab:finbert_hparams}
+\begin{tabular}{ll}
+\hline
+Setting & Value \\
+\hline
+        Base checkpoint & \texttt{yiyanghkust/finbert-tone} (BERT-base, 109.8M parameters) \\
+        Trainable parameters & last 2 encoder blocks, 14.18M of 109.8M \\
+        Regression head & frozen \texttt{Linear(3,1)} on the three tone logits \\
+        Output activation & linear \\
+        Target & \texttt{volume\_surge\_price}, standardised per fold on training-window statistics \\
+        Loss & Huber, $\delta = 1$ \\
+        Optimiser & AdamW, weight decay 0.094 \\
+        Learning rate & $1.96\times10^{-4}$ \\
+        Batch size & 64, mixed precision (fp16) \\
+        Max sequence length & 128 tokens \\
+        Epoch budget & 100 maximum, early stopping patience 5 \\
+        Epoch selection & last 10\% of each fold's training window, chronological, behind the purge gap \\
+        Purge gap & 1 day at every fold boundary and between train and validation \\
+        Seed & 42 \\
+        Score calibration & per fold, standardised by that fold's validation mean and standard deviation \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Selection procedure.} In order:
+
+\begin{enumerate}
+\item \textbf{Depth sweep.} The number of unfrozen encoder blocks was chosen first, by
+      training with 1, 2 and 3 blocks unfrozen and all other settings held constant.
+      Two blocks minimised both error measures and gave the highest correlation
+      (MSE 0.0028, MAE 0.0313, $r = 0.2738$), and were retained.
+\item \textbf{Optuna search.} With the depth fixed, the learning rate and weight decay
+      were tuned by Optuna over the ranges in Table~\ref{tab:finbert_hparams_space}.
+      The optimiser, batch size and sequence length were pinned rather than searched.
+      Trials were scored on a random 10\% split of a 3{,}000-headline subsample.
+\item \textbf{Freeze.} The resulting configuration was carried forward unchanged. It is
+      \emph{not} re-tuned per fold: one configuration is used for all six folds.
+\item \textbf{Throughput adjustment.} The batch size was raised from 9 to 64 and mixed
+      precision enabled, with the learning rate rescaled by $\sqrt{64/9}$ to keep the
+      per-step noise scale comparable. No other value was altered for speed.
+\item \textbf{Conditioning correction.} The target is standardised on each fold's
+      training window and the output activation made linear. At initialisation the
+      published $\tanh$ head emits values with standard deviation 0.698 against a
+      target standard deviation of 0.058, with mean gradient 0.293, so the model
+      begins roughly twelve target standard deviations from its optimum behind a
+      largely saturated nonlinearity. On a standardised target the published
+      $\delta = 1$ also becomes a genuine robust threshold, whereas on the raw target
+      ($|y| < 0.25$) the linear branch of the Huber loss is unreachable and the
+      objective reduces to mean squared error.
+\item \textbf{Per-fold epoch selection.} The only quantity chosen inside the
+      out-of-fold procedure is the number of epochs, taken as the minimum of the
+      validation loss on the last 10\% of each fold's own training window, behind the
+      purge gap, with patience 5.
+\item \textbf{Per-fold calibration.} Each fold's scores are standardised by the mean
+      and standard deviation of that fold's validation predictions, both computed on
+      data preceding the scored slice.
+\end{enumerate}
+
+\paragraph{Limitation.} Steps 1 and 2 were carried out on a random split of the full
+sample, so the configuration itself is not free of look-ahead even though the weights
+and the epoch count are. A fully nested design would repeat the search inside each
+fold's training window. Because one fixed configuration is applied unchanged to every
+fold, this affects the choice of configuration rather than the fold structure, and is
+reported as a limitation rather than a resolved issue.

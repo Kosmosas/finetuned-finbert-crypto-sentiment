@@ -1,0 +1,35 @@
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{threeparttable}
+\caption{Diebold--Mariano tests of equal predictive accuracy for the iTransformer forecasts, on absolute errors of the seed-averaged forecast.}
+\label{tab:itransformer_dm_oof}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{llrrrrr}
+\toprule
+\textbf{Period} & \textbf{Comparison} & \textbf{n} & $\bm{\bar{d}}$ & \textbf{DM} & $\bm{p}$ & $\bm{q_{BH}}$ \\
+\midrule
+Uptrend & Price + volume vs zero change & 5,120 & -0.326 & -0.885 & 0.3762 & 0.5267 \\
+Uptrend & Price + volume + sentiment vs zero change & 5,120 & -0.006 & -0.025 & 0.9798 & 0.9798 \\
+Uptrend & Price + volume + technicals vs zero change & 5,120 & -0.379 & -1.143 & 0.2530 & 0.4428 \\
+Uptrend & Full dataset vs zero change & 5,120 & 1.660 & 3.067 & 0.0022 & 0.0152 \\
+Uptrend & Price + volume + sentiment vs Price + volume & 5,120 & 0.320 & 0.893 & 0.3720 & 0.5267 \\
+Uptrend & Price + volume + technicals vs Price + volume & 5,120 & -0.053 & -0.125 & 0.9003 & 0.9695 \\
+Uptrend & Full dataset vs Price + volume & 5,120 & 1.985 & 3.564 & 0.0004 & 0.0052 \\
+\midrule
+Sideways & Price + volume vs zero change & 3,621 & 1.056 & 1.985 & 0.0472 & 0.1652 \\
+Sideways & Price + volume + sentiment vs zero change & 3,621 & 0.321 & 0.771 & 0.4407 & 0.5609 \\
+Sideways & Price + volume + technicals vs zero change & 3,621 & 0.747 & 1.451 & 0.1467 & 0.3648 \\
+Sideways & Full dataset vs zero change & 3,621 & 2.315 & 2.655 & 0.0080 & 0.0372 \\
+Sideways & Price + volume + sentiment vs Price + volume & 3,621 & -0.735 & -1.334 & 0.1824 & 0.3648 \\
+Sideways & Price + volume + technicals vs Price + volume & 3,621 & -0.309 & -0.477 & 0.6335 & 0.7391 \\
+Sideways & Full dataset vs Price + volume & 3,621 & 1.259 & 1.391 & 0.1643 & 0.3648 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item \textit{Note:} $\bar{d}$ is the mean difference in absolute forecast error (first model minus second), in USD. A negative DM statistic indicates lower absolute error for the first model. The long-run variance uses a Newey--West estimator with the Harvey--Leybourne--Newbold small-sample correction. $p$ is the unadjusted p-value and $q_{BH}$ the Benjamini--Hochberg adjusted p-value across the whole family of tests in this table.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

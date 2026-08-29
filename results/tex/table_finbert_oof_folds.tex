@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\caption{Expanding-window out-of-fold folds for the headline scoring model. Each fold is fitted only on headlines preceding its scored slice, with a one-day purge at every boundary; $r_{\mathrm{OOF}}$ is the correlation between the fold's scores and the label on the slice it scored, $r_{\mathrm{in}}$ the same correlation evaluated on its own training window.}
+\label{tab:finbert_oof_folds}
+\begin{tabular}{clrrrrrr}
+\hline
+Fold & Scored slice & $n_{\mathrm{scored}}$ & $n_{\mathrm{train}}$ & $n_{\mathrm{val}}$ & Epoch & $r_{\mathrm{OOF}}$ & $r_{\mathrm{in}}$ \\
+\hline
+        1 & 2020-01-01 -- 2021-01-01 & 2,573 & 2,261 & 251 & 1 & -0.0323 & +0.1290 \\
+        2 & 2021-01-01 -- 2022-01-01 & 2,797 & 4,567 & 509 & 1 & +0.0178 & +0.1122 \\
+        3 & 2022-01-01 -- 2023-01-01 & 5,978 & 7,089 & 788 & 1 & -0.0124 & +0.1336 \\
+        4 & 2023-01-01 -- 2024-01-01 & 3,015 & 12,457 & 1,386 & 1 & +0.0340 & +0.1262 \\
+        5 & 2024-01-01 -- 2024-06-01 & 1,130 & 15,180 & 1,688 & 4 & +0.1268 & +0.2247 \\
+        6 & 2024-06-01 -- 2025-07-01 & 2,244 & 16,187 & 1,800 & 1 & +0.0763 & +0.1288 \\
+\hline
+\end{tabular}
+\end{table}

@@ -1,0 +1,78 @@
+\begin{table}[H]
+\footnotesize
+\caption{iTransformer backtesting results across all strategies and market regimes.}
+\label{tab:itransformer_all_backtesting_results}
+
+\begin{adjustwidth}{-\extralength}{0cm}
+\begin{threeparttable}
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{4pt}
+
+\begin{tabularx}{\fulllength}{
+>{\raggedright\arraybackslash}m{2.4cm}
+>{\raggedright\arraybackslash}m{4.0cm}
+>{\raggedleft\arraybackslash}m{1.2cm}
+>{\raggedleft\arraybackslash}m{1.4cm}
+>{\raggedleft\arraybackslash}m{1.3cm}
+>{\raggedleft\arraybackslash}m{1.7cm}
+>{\raggedleft\arraybackslash}m{1.2cm}
+>{\raggedleft\arraybackslash}m{1.6cm}
+}
+\toprule
+\textbf{Strategy} & \textbf{Feature set} & \textbf{Trades} & \textbf{Profitable} & \textbf{WR (\%)} & \textbf{Max DD (\%)} & \textbf{Sharpe} & \textbf{Final (\$)} \\
+\midrule
+\multicolumn{8}{c}{\textit{Uptrend Market Period (Jun 2024 -- Nov 2024)}} \\
+\midrule
+\multirow{5}{*}{Threshold}
+& Price + volume               & 80 & 23 & \textbf{29.11} & 9.10 & 0.139 & \textbf{12,769} \\
+& Price + volume + sentiment   & 50 & 13 & 26.53 & 8.52 & \textbf{0.202} & 12,099 \\
+& Price + volume + technicals  & 4 & 0 & 0.00 & \textbf{1.37} & $-$0.729 & 9,863 \\
+& Full dataset                 & \textit{0} & \textit{0} & \textit{0.00} & \textit{0.00} & \textit{0.000} & \textit{10,000} \\
+& \textit{Buy-and-hold} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{13,891} \\
+\addlinespace
+\multirow{5}{*}{Volatility-adjusted}
+& Price + volume               & 85 & 23 & 27.38 & 17.87 & 0.122 & \textbf{13,812} \\
+& Price + volume + sentiment   & 44 & 12 & 27.91 & 7.85 & 0.172 & 11,551 \\
+& Price + volume + technicals  & 4 & 1 & \textbf{33.33} & \textbf{0.03} & \textbf{0.691} & 10,172 \\
+& Full dataset                 & 283 & 80 & 28.37 & 16.84 & 0.056 & 12,925 \\
+& \textit{Buy-and-hold} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{13,891} \\
+\addlinespace
+\multirow{5}{*}{Momentum}
+& Price + volume               & 299 & 54 & 18.12 & \textbf{2.25} & 0.032 & 10,277 \\
+& Price + volume + sentiment   & 197 & 46 & 23.47 & 5.75 & 0.114 & \textbf{11,468} \\
+& Price + volume + technicals  & 237 & 62 & \textbf{26.27} & 2.32 & \textbf{0.150} & 11,454 \\
+& Full dataset                 & 167 & 34 & 20.48 & 4.51 & 0.110 & 11,064 \\
+& \textit{Buy-and-hold} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{13,891} \\
+\midrule
+\multicolumn{8}{c}{\textit{Sideways Market Period (Jan 2025 -- Jun 2025)}} \\
+\midrule
+\multirow{5}{*}{Threshold}
+& Price + volume               & 82 & 21 & 25.93 & 15.86 & \textbf{0.092} & \textbf{12,034} \\
+& Price + volume + sentiment   & 58 & 16 & \textbf{28.07} & \textbf{8.82} & 0.086 & 10,774 \\
+& Price + volume + technicals  & \textit{0} & \textit{0} & \textit{0.00} & \textit{0.00} & \textit{0.000} & \textit{10,000} \\
+& Full dataset                 & \textit{0} & \textit{0} & \textit{0.00} & \textit{0.00} & \textit{0.000} & \textit{10,000} \\
+& \textit{Buy-and-hold} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{11,057} \\
+\addlinespace
+\multirow{5}{*}{Volatility-adjusted}
+& Price + volume               & 82 & 18 & 22.22 & 18.68 & 0.084 & \textbf{11,341} \\
+& Price + volume + sentiment   & 56 & 15 & \textbf{27.27} & \textbf{10.04} & \textbf{0.093} & 10,800 \\
+& Price + volume + technicals  & \textit{0} & \textit{0} & \textit{0.00} & \textit{0.00} & \textit{0.000} & \textit{10,000} \\
+& Full dataset                 & 263 & 56 & 21.37 & 37.55 & $-$0.036 & 8,195 \\
+& \textit{Buy-and-hold} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{11,057} \\
+\addlinespace
+\multirow{5}{*}{Momentum}
+& Price + volume               & 283 & 45 & 15.96 & \textbf{4.80} & $-$0.046 & \textbf{9,697} \\
+& Price + volume + sentiment   & 201 & 36 & \textbf{18.00} & 6.33 & \textbf{$-$0.028} & 9,639 \\
+& Price + volume + technicals  & 287 & 48 & 16.78 & 9.27 & $-$0.073 & 9,217 \\
+& Full dataset                 & 187 & 30 & 16.13 & 8.16 & $-$0.082 & 9,331 \\
+& \textit{Buy-and-hold} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{--} & \textit{11,057} \\
+\bottomrule
+\end{tabularx}
+
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item \textit{Note:} Signals come from the iTransformer forecasters of Table~\ref{tab:itransformer_forecasting_performance_results}; strategy parameters were tuned on the training period only, by 10-fold chronological cross-validation with Optuna. Within each strategy and market regime, bold values denote the best model-based result in the corresponding metric column. For maximum drawdown, lower values are better. Buy-and-hold is shown in italics as a benchmark. WR is computed over evaluable closed trades only. Rows shown entirely in italics are runs in which the CV-selected entry threshold was never crossed, so no position was opened; they are excluded from the best-value comparison, since their zero drawdown reflects inactivity rather than risk control.
+\end{tablenotes}
+\end{threeparttable}
+\end{adjustwidth}
+\end{table}

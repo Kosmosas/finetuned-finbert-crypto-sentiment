@@ -1,0 +1,53 @@
+% Short methodology note: selection of trading-strategy hyperparameters.
+% Drop-in for the strategy hyperparameter search subsection.
+
+\subsection{Selection of strategy hyperparameters}
+\label{sec:strategy_hparam_selection_revised}
+
+Strategy hyperparameters are tuned on the training period only, by chronological
+cross-validation with Optuna. The training frame is divided into $K = 10$
+contiguous folds (\texttt{KFold} without shuffling), so every fold is a
+contiguous block of hours and no fold precedes its own training data.
+
+The earlier procedure ran an independent Optuna study on each fold and then
+averaged the per-fold winners, taking the arithmetic mean of the continuous
+parameters and the rounded mean of the integer ones. That is not an optimisation
+of any stated objective: the mean of a set of maximisers is not itself a
+maximiser, it is undefined for integer and categorical parameters such as the
+holding period, and the averaged configuration need not perform well on any
+individual fold.
+
+The procedure is therefore replaced by a single study over the same search space,
+in which a candidate configuration $\theta$ is scored by its aggregate performance
+across all folds,
+%
+\begin{equation}
+\hat{\theta} \;=\; \arg\max_{\theta}\; \frac{1}{K}\sum_{k=1}^{K}
+\mathrm{SR}\!\left(\theta; \mathcal{F}_k\right),
+\label{eq:strategy_objective}
+\end{equation}
+%
+where $\mathrm{SR}(\theta; \mathcal{F}_k)$ is the annualised Sharpe ratio obtained
+by running the strategy with configuration $\theta$ over fold $\mathcal{F}_k$.
+Each trial is thus evaluated on all ten folds, and the selected configuration is
+the one that performs best overall rather than a summary of ten separate winners.
+The computational cost is unchanged: the earlier scheme evaluated $K$ studies of
+$N$ trials each, the revised one evaluates $N$ trials over $K$ folds.
+
+Selecting a single configuration also makes fold-level dispersion reportable,
+because the Sharpe ratio of \emph{the same} configuration can now be quoted on
+each fold. This dispersion is substantial: the selected momentum configuration
+ranges from $-1.44$ to $+3.42$ across the ten folds (standard deviation $1.45$),
+and comparable spreads occur for the other strategies. Strategy-level point
+estimates should therefore be read together with this variation rather than on
+their own.
+
+The change is material. Holding the forecasting model fixed and altering only the
+selection rule, the momentum strategy on the price-and-volume feature set falls
+from \$13{,}620 to \$10{,}749 over the uptrend evaluation period, a reduction of
+roughly one fifth attributable entirely to the selection procedure.\footnote{The
+Optuna study is executed with parallel workers, and the tree-structured Parzen
+estimator is not deterministic under parallelism even for a fixed seed. Repeated
+executions of identical code therefore return different configurations; the
+reported figures are single draws, and differences of a few hundred dollars
+between configurations are within this variation.}
