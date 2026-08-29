@@ -1,34 +1,60 @@
 # Python dependencies for the notebooks and helper modules in this repository.
-# Versions are left unpinned; the project was developed on Python 3.10+.
-# Install with:  pip install -r requirements.txt
+#
+# Versions are pinned to the environment the reported results were produced in.
+# Recorded 2026-08-29 from the project virtualenv:
+#
+#   Python   3.12.3          (CPython, x86_64)
+#   OS       Linux 7.0.0-30-generic, glibc 2.39
+#   GPU      NVIDIA GeForce RTX 3060 (12 GB), driver 595.71.05, CUDA 13.0
+#
+# Install with:
+#   python -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements.txt
+#
+# NOTE ON torch: the recorded build is 2.13.0+cu130 (CUDA 13.0 wheels). Plain
+# `pip install torch==2.13.0` may resolve to a different CUDA build. To match
+# the recorded environment exactly:
+#   pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cu130
+#
+# NOTE ON transformers: the tokenizer for `yiyanghkust/finbert-tone` is built
+# from library defaults, because that checkpoint ships no tokenizer_config.json
+# or tokenizer.json (only config.json, pytorch_model.bin, vocab.txt). Tokenizer
+# behaviour therefore depends on the transformers version — do not float it.
 
 # --- Data handling ---
-numpy
-pandas
-scipy
+numpy==2.5.1
+pandas==3.0.5
+scipy==1.18.0
 
 # --- Machine learning / deep learning ---
-torch
-transformers
-scikit-learn
-xgboost
-iTransformer
-optuna
-joblib
+torch==2.13.0
+transformers==5.15.0
+scikit-learn==1.9.0
+xgboost==3.4.0
+iTransformer==0.8.1
+optuna==4.9.0
+joblib==1.5.3
 
 # --- NLP / text preprocessing ---
-nltk
-emoji
+nltk==3.10.2
 
 # --- Plotting ---
-matplotlib
-seaborn
+matplotlib==3.11.1
 
 # --- Utilities ---
-tqdm
+tqdm==4.68.2
 
 # --- Asset download helper (scripts/download_assets.py) ---
-huggingface_hub
+huggingface_hub==1.19.0
+
+# --- Not present in the recorded environment ---
+# These two are imported only by notebooks that were not re-run for the current
+# revision, so no version can be certified against the reported results:
+#   emoji    -> telegram_filtering/filter.ipynb   (headline cleaning, stage 1)
+#   seaborn  -> weights_comparison_and_derive/weights_derive.ipynb  (plots only)
+# Install them if you re-run those two notebooks.
+emoji
+seaborn
 
 # Note: the sentiment sandbox notebooks were originally run on Google Colab
 # and contain `from google.colab import drive` cells. Those are Colab-only

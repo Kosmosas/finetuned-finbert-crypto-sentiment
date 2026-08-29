@@ -120,7 +120,7 @@ FEATURE_SET_ORDER = [
 
 NICE_NAME = {
     "price+volume": "Price + volume",
-    "price+volume+sentiment": "Price + volume + sentiment",
+    "price+volume+sentiment": "Price + volume + headline score",
     "price+volume+technicals": "Price + volume + technicals",
     "full": "Full dataset",
 }
