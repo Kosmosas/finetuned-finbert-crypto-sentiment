@@ -103,6 +103,51 @@ notebooks.
 
 ---
 
+## Environment and seeds
+
+The environment the reported results were produced in is pinned in
+[`requirements.txt`](requirements.txt): Python 3.12.3, `torch` 2.13.0+cu130,
+`transformers` 5.15.0, on Linux (glibc 2.39) with an NVIDIA RTX 3060 (12 GB),
+driver 595.71.05, CUDA 13.0.
+
+The headline scorer is `yiyanghkust/finbert-tone` at revision
+`4921590d3c0c3832c0efea24c8381ce0bda7844b`. That checkpoint ships no
+`tokenizer_config.json` or `tokenizer.json` — only `config.json`,
+`pytorch_model.bin` and `vocab.txt` — so the tokenizer (WordPiece, uncased,
+30,873 tokens) is constructed from `transformers` defaults. Its behaviour is
+therefore tied to the pinned `transformers` version. The calls in the notebooks
+do not pass `revision=`; they resolve to whatever `main` points at, so pin it
+explicitly if you re-run them.
+
+### Seeds that are set
+
+| Stage | Where | Seed | What it controls |
+|---|---|---|---|
+| Out-of-fold FinBERT scoring | `sentiment_analysis/oof_finbert_scoring.ipynb` | `SEED = 42` | head initialisation (`torch.manual_seed`) and per-epoch batch shuffling (`torch.Generator`) |
+| Out-of-fold scoring, full stream | `sentiment_analysis/oof_score_full_stream.ipynb` | `SEED = 42` | model construction |
+| iTransformer training | `itransformer_models/01_itransformer_training.ipynb` | `SEEDS = [0, 1, 2]` | one model per seed; each seeds `torch`, `numpy` and the loader generator |
+| LSTM training | `lstm_models/01_lstm_training.ipynb` | `SEEDS = [0, 1, 2]` | as above |
+| Matched-training robustness check | `itransformer_models/matched_training_check.py` | `SEEDS = [0, 1, 2]` | as above |
+| iTransformer hyperparameter search | `itransformer_common.py` (`tune`, default) | `TPESampler(seed=0)` | Optuna sampler |
+| LSTM hyperparameter search | `lstm_models/01_lstm_training.ipynb` | `TPESampler(seed=0)` | Optuna sampler |
+| Shuffled-forecast control | `*/02_*_backtesting.ipynb` | `default_rng(0)` | the permutation of the forecast used as a no-signal control |
+| Impact-parameter study | `weights_comparison_and_derive/weights_derive.ipynb` | `random_state=13` | the train/test split |
+
+Tables report the mean ± standard deviation over the three training seeds; the
+backtest signal is the seed-averaged forecast.
+
+### What is not reproducible, and why
+
+| Component | Reason |
+|---|---|
+| **Backtest strategy search** | A seed reaches the sampler, but `02_*_backtesting.ipynb` sets `N_JOBS = 8`, and Optuna's TPE is not deterministic under parallelism. Set `N_JOBS = 1` for a reproducible, much slower search. See [`results/README.md`](results/README.md) for the measured size of the effect. |
+| **Exact training runs** | `torch.backends.cudnn.deterministic` and `torch.use_deterministic_algorithms` are not set, so GPU kernel scheduling makes runs non-bit-identical even at a fixed seed. Seed-to-seed spread is reported alongside every forecasting number. |
+| **Single-checkpoint FinBERT scores** | `predicted_sentiments_finbert.csv` came from `sentiment_analysis/FinBERT sandbox.ipynb`, which shuffles with `DataLoader(shuffle=True)` and sets no seed. The committed CSV is the artefact of record; it cannot be regenerated exactly. The out-of-fold scores that supersede it *are* seeded. |
+| **Finance-Qwen sandbox** | Same — `DataLoader(shuffle=True)`, no seed. Those scores never feed the forecasting stage. |
+| **TF-IDF SVM / GBR baselines** | The `train_test_split(..., random_state=42)` lines are commented out and the estimators carry no `random_state`. |
+
+---
+
 ## Notes
 
 - **Reproducibility of the backtests.** The strategy searches call
