@@ -173,11 +173,16 @@ backtest signal is the seed-averaged forecast.
 If you use this code or data, please cite the accompanying paper:
 
 ```bibtex
-@article{TODO_citation_key,
-  title   = {TODO: paper title},
-  author  = {TODO: authors},
-  journal = {TODO: venue},
-  year    = {TODO},
-  doi     = {TODO}
+@article{bdcc10090309,
+    AUTHOR = {Mažeika, Povilas and Paulavičius, Remigijus and Filatovas, Ernestas},
+    TITLE = {Price-Derived Headline Market-Impact Labels for Bitcoin Forecasting with Multivariate Transformers},
+    JOURNAL = {Big Data and Cognitive Computing},
+    VOLUME = {10},
+    YEAR = {2026},
+    NUMBER = {9},
+    ARTICLE-NUMBER = {309},
+    URL = {https://www.mdpi.com/2504-2289/10/9/309},
+    ISSN = {2504-2289},
+    DOI = {10.3390/bdcc10090309}
 }
 ```
